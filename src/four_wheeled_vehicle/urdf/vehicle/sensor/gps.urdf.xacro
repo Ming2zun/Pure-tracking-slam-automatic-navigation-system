@@ -1,0 +1,26 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="gps_xacro" params="parent_link xyz">
+        <link name="gps_link">
+        </link>
+
+        <joint name="gps_fixed_joint" type="fixed">
+            <parent link="${parent_link}"/>
+            <child link="gps_link"/>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+        </joint>
+
+        <gazebo reference="gps_link">
+            <sensor type="gps" name="gps">
+                <always_on>true</always_on>
+                <update_rate>10</update_rate>
+                <plugin name="gazebo_ros_gps_sensor" filename="libgazebo_ros_gps_sensor.so">
+                    <ros>
+                        <remapping>~/out:=gps/fix</remapping>
+                        <remapping>~/velocity:=gps/vel</remapping>
+                    </ros>
+                    <frame_name>gps_link</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

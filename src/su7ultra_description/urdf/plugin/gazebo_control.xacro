@@ -1,0 +1,133 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--
+    ═══════════════════════════════════════════════════════
+      通用阿克曼车辆控制插件（支持双驱动后端切换）
+      
+      drive_plugin 可选值:
+        ackermann_drive      → 官方 gazebo_ros_ackermann_drive（默认）
+        explicit_ackermann   → 自研显式阿克曼插件（ackermann_vehicle_plugins 包）
+      
+      所有几何参数通过 xacro:arg 传入，换车型只改参数即可。
+    ═══════════════════════════════════════════════════════
+    -->
+
+    <!-- ── 可配置参数 ── -->
+    <!-- drive_plugin: ackermann_drive(官方) | explicit_ackermann(自研) -->
+    <xacro:arg name="drive_plugin" default="ackermann_drive" />
+    <xacro:arg name="wheelbase" default="2.990" />       <!-- 前后轴距 L (m) -->
+    <xacro:arg name="track_width" default="1.666" />     <!-- 左右轮距 W (m) -->
+    <xacro:arg name="wheel_radius" default="0.3" />      <!-- 车轮半径 r (m) -->
+    <xacro:arg name="max_steer" default="0.699" />       <!-- 最大转向角 (rad) -->
+    <xacro:arg name="max_speed" default="5.0" />         <!-- 最大线速度 (m/s) -->
+    <xacro:arg name="max_angular_vel" default="1.0" />   <!-- 最大角速度 (rad/s) -->
+    <xacro:arg name="odom_frame" default="odom" />       <!-- 里程计坐标系名 -->
+    <xacro:arg name="base_frame" default="base_footprint" /> <!-- 车体坐标系名 -->
+
+    <xacro:macro name="gazebo_control_plugin">
+
+        <!-- ═══════════════════════════════════════════════════
+             方案 A：官方 gazebo_ros_ackermann_drive
+             ═══════════════════════════════════════════════════ -->
+        <xacro:if value="${'$(arg drive_plugin)' == 'ackermann_drive'}">
+            <gazebo>
+                <plugin name="gazebo_ackermann_drive" filename="libgazebo_ros_ackermann_drive.so">
+                    <ros>
+                        <namespace>/</namespace>
+                        <remapping>cmd_vel:=cmd_vel</remapping>
+                        <remapping>odom:=odom</remapping>
+                    </ros>
+
+                    <update_rate>50.0</update_rate>
+
+                    <!-- 车轮关节 -->
+                    <front_left_joint>front_left_wheel_joint</front_left_joint>
+                    <front_right_joint>front_right_wheel_joint</front_right_joint>
+                    <rear_left_joint>rear_left_wheel_joint</rear_left_joint>
+                    <rear_right_joint>rear_right_wheel_joint</rear_right_joint>
+
+                    <!-- 转向关节 -->
+                    <left_steering_joint>front_left_steering_joint</left_steering_joint>
+                    <right_steering_joint>front_right_steering_joint</right_steering_joint>
+
+                    <!-- 运动学参数 -->
+                    <max_steer>$(arg max_steer)</max_steer>
+                    <max_steering_angle>1.570796</max_steering_angle>
+                    <max_speed>$(arg max_speed)</max_speed>
+
+                    <!-- PID 参数 -->
+                    <left_steering_pid_gain>5000 0 800</left_steering_pid_gain>
+                    <left_steering_i_range>0 0</left_steering_i_range>
+                    <right_steering_pid_gain>5000 0 800</right_steering_pid_gain>
+                    <right_steering_i_range>0 0</right_steering_i_range>
+                    <linear_velocity_pid_gain>2000 0 2</linear_velocity_pid_gain>
+                    <linear_velocity_i_range>0 0</linear_velocity_i_range>
+
+                    <!-- 输出设置 -->
+                    <publish_odom>true</publish_odom>
+                    <publish_odom_tf>true</publish_odom_tf>
+                    <publish_wheel_tf>false</publish_wheel_tf>
+                    <publish_distance>true</publish_distance>
+
+                    <odometry_frame>$(arg odom_frame)</odometry_frame>
+                    <robot_base_frame>$(arg base_frame)</robot_base_frame>
+                </plugin>
+            </gazebo>
+        </xacro:if>
+
+        <!-- ═══════════════════════════════════════════════════
+             方案 B：自研显式阿克曼插件（ackermann_vehicle_plugins 包）
+             所有参数从 SDF 传入，PID 也可配置
+             ═══════════════════════════════════════════════════ -->
+        <xacro:if value="${'$(arg drive_plugin)' == 'explicit_ackermann'}">
+            <gazebo>
+                <plugin name="explicit_ackermann_plugin"
+                        filename="libexplicit_ackermann_plugin.so">
+
+                    <!-- 运动学参数（从 xacro:arg 传入） -->
+                    <wheelbase>$(arg wheelbase)</wheelbase>
+                    <track_width>$(arg track_width)</track_width>
+                    <wheel_radius>$(arg wheel_radius)</wheel_radius>
+                    <max_steer>$(arg max_steer)</max_steer>
+                    <max_speed>$(arg max_speed)</max_speed>
+                    <max_angular_vel>$(arg max_angular_vel)</max_angular_vel>
+                    <low_speed_threshold>0.01</low_speed_threshold>
+
+                    <!-- PID: P I D -->
+                    <steering_pid>2000 0 300</steering_pid>
+                    <speed_pid>1000 0 1</speed_pid>
+                    <pid_output_limit>5000</pid_output_limit>
+
+                    <!-- 坐标系 -->
+                    <odom_frame>$(arg odom_frame)</odom_frame>
+                    <base_frame>$(arg base_frame)</base_frame>
+                    <odom_pub_rate>10</odom_pub_rate>
+
+                    <!-- 话题名 -->
+                    <cmd_vel_topic>cmd_vel</cmd_vel_topic>
+                    <odom_topic>odom</odom_topic>
+                </plugin>
+            </gazebo>
+        </xacro:if>
+
+        <!-- ═══════════════════════════════════════════════════
+             关节状态发布（两种插件都需要）
+             ═══════════════════════════════════════════════════ -->
+        <gazebo>
+            <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+                <ros>
+                    <namespace>/</namespace>
+                    <remapping>~/out:=/joint_states</remapping>
+                </ros>
+                <update_rate>50</update_rate>
+                <joint_name>front_left_steering_joint</joint_name>
+                <joint_name>front_right_steering_joint</joint_name>
+                <joint_name>front_left_wheel_joint</joint_name>
+                <joint_name>front_right_wheel_joint</joint_name>
+                <joint_name>rear_left_wheel_joint</joint_name>
+                <joint_name>rear_right_wheel_joint</joint_name>
+            </plugin>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

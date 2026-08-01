@@ -1,0 +1,27 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="four_wheeled_vehicle">
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/base.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/actuator/steering.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/actuator/wheel.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/sensor/lidar3d.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/sensor/gps.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/sensor/imu.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/sensor/camera.urdf.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/plugin/gazebo_control.xacro" />
+    <xacro:include filename="$(find four_wheeled_vehicle)/urdf/vehicle/sensor/laser.urdf.xacro" />
+    <xacro:base_xacro />
+    
+    <xacro:steering_xacro steering_name="front_left" parent_link="base_link" xyz="1.445 0.833 -0.024" />
+    <xacro:steering_xacro steering_name="front_right" parent_link="base_link" xyz="1.445 -0.833 -0.024" />
+
+    <xacro:wheel_xacro wheel_name="front_left" parent_link="front_left_steering_link" xyz="0 0 0" effort="0" velocity="0" />
+    <xacro:wheel_right_xacro wheel_name="front_right" parent_link="front_right_steering_link" xyz="0 0 0" effort="0" velocity="0" />
+    <xacro:wheel_xacro wheel_name="rear_left" parent_link="base_link" xyz="-1.545 0.833 -0.024" effort="5000" velocity="10000" />
+    <xacro:wheel_right_xacro wheel_name="rear_right" parent_link="base_link" xyz="-1.545 -0.833 -0.024" effort="5000" velocity="10000" />
+
+    <xacro:lidar3d_xacro parent_link="base_link" xyz="1.30 0 0.95" />
+    <xacro:gps_xacro parent_link="base_link" xyz="-0.50 0 0.95" />
+    <xacro:imu_xacro parent_link="base_link" xyz="0 0 0.30" />
+    <xacro:camera_xacro parent_link="base_link" xyz="2.20 0 0.60" />
+    <xacro:laser_xacro parent_link="base_link" xyz="1.30 0 0.3" />
+    <xacro:gazebo_control_plugin />
+</robot>

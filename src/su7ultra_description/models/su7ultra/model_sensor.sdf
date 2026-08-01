@@ -1,0 +1,654 @@
+<sdf version='1.7'>
+    <model name='su7ultra'>
+        <pose>0 0 1.0 0 0 0</pose>
+        <link name='base_link'>
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>2000</mass>
+            <inertia>
+                <ixx>1200</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>2500</iyy>
+                <iyz>0</iyz>
+                <izz>3000</izz>
+            </inertia>
+        </inertial>
+
+        <collision name='base_link_collision'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <box>
+                    <size>5.24 1.5 0.47</size>
+                </box>
+            </geometry>
+        </collision>
+
+        <visual name='base_link_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <mesh>
+                    <uri>model://su7ultra/meshes/car.dae</uri>
+                    <scale>1 1 1</scale>
+                </mesh>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='front_left_steering_joint' type='revolute'>
+            <pose relative_to='base_link'>1.445 0.833 -0.024 0 0 0</pose>
+            <parent>base_link</parent>
+            <child>front_left_steering_link</child>
+
+            <axis>
+                <xyz>0 0 1</xyz>
+
+
+                <limit>
+                    <lower>-0.6</lower>
+                    <upper>0.6</upper>
+                    <effort>1e+06</effort>
+                    <velocity>10000</velocity>
+                </limit>
+
+                <dynamics>
+                    <damping>10</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='front_left_steering_link'>
+        <pose relative_to='front_left_steering_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>5</mass>
+            <inertia>
+                <ixx>0.012</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.025</iyy>
+                <iyz>0</iyz>
+                <izz>0.012</izz>
+            </inertia>
+        </inertial>
+
+        <visual name='front_left_steering_link_visual'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.01</length>
+                    <radius>0.1</radius>
+                </cylinder>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='front_left_wheel_joint' type='revolute'>
+            <pose relative_to='front_left_steering_link'>0 0 0 0 0 0</pose>
+            <parent>front_left_steering_link</parent>
+            <child>front_left_wheel_link</child>
+
+            <axis>
+                <xyz>0 1 0</xyz>
+
+                <limit>
+                    <effort>0</effort>
+                    <velocity>0</velocity>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+
+                <dynamics>
+                    <damping>10.0</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='front_left_wheel_link'>
+        <pose relative_to='front_left_wheel_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>40</mass>
+            <inertia>
+                <ixx>1.4</ixx>
+                <iyy>2.5</iyy>
+                <izz>1.4</izz>
+            </inertia>
+        </inertial>
+
+        <collision name='front_left_wheel_link_collision'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.35</length>
+                    <radius>0.3</radius>
+                </cylinder>
+            </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>2.0</mu>
+                        <mu2>1.5</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+
+        <visual name='front_left_wheel_link_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <mesh>
+                    <uri>model://su7ultra/meshes/wheel_l.dae</uri>
+                    <scale>1 1 1</scale>
+                </mesh>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='front_right_steering_joint' type='revolute'>
+            <pose relative_to='base_link'>1.445 -0.833 -0.024 0 0 0</pose>
+            <parent>base_link</parent>
+            <child>front_right_steering_link</child>
+
+            <axis>
+                <xyz>0 0 1</xyz>
+                <limit>
+                    <lower>-0.6</lower>
+                    <upper>0.6</upper>
+                    <effort>1e+06</effort>
+                    <velocity>10000</velocity>
+                </limit>
+
+                <dynamics>
+                    <damping>10</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='front_right_steering_link'>
+        <pose relative_to='front_right_steering_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>5</mass>
+            <inertia>
+                <ixx>0.012</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.025</iyy>
+                <iyz>0</iyz>
+                <izz>0.012</izz>
+            </inertia>
+        </inertial>
+
+        <visual name='front_right_steering_link_visual'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.01</length>
+                    <radius>0.1</radius>
+                </cylinder>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='front_right_wheel_joint' type='revolute'>
+            <pose relative_to='front_right_steering_link'>0 0 0 0 0 0</pose>
+            <parent>front_right_steering_link</parent>
+            <child>front_right_wheel_link</child>
+
+            <axis>
+                <xyz>0 1 0</xyz>
+
+                <limit>
+                    <effort>0</effort>
+                    <velocity>0</velocity>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+
+                <dynamics>
+                    <damping>10.0</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+
+        <link name='front_right_wheel_link'>
+        <pose relative_to='front_right_wheel_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>40</mass>
+            <inertia>
+                <ixx>1.4</ixx>
+                <iyy>2.5</iyy>
+                <izz>1.4</izz>
+            </inertia>
+        </inertial>
+
+        <collision name='front_right_wheel_link_collision'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.35</length>
+                    <radius>0.3</radius>
+                </cylinder>
+            </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>2.0</mu>
+                        <mu2>1.5</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+
+        <visual name='front_right_wheel_link_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <mesh>
+                    <uri>model://su7ultra/meshes/wheel_r.dae</uri>
+                    <scale>1 1 1</scale>
+                </mesh>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='rear_left_wheel_joint' type='revolute'>
+            <pose relative_to='base_link'>-1.545 0.833 -0.024 0 0 0</pose>
+            <parent>base_link</parent>
+            <child>rear_left_wheel_link</child>
+
+            <axis>
+                <xyz>0 1 0</xyz>
+
+                <limit>
+                    <effort>5000</effort>
+                    <velocity>10000</velocity>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+
+                <dynamics>
+                    <damping>10.0</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <link name='rear_left_wheel_link'>
+
+        <pose relative_to='rear_left_wheel_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>40</mass>
+            <inertia>
+                <ixx>1.4</ixx>
+                <iyy>2.5</iyy>
+                <izz>1.4</izz>
+            </inertia>
+        </inertial>
+
+        <collision name='rear_left_wheel_link_collision'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.35</length>
+                    <radius>0.3</radius>
+                </cylinder>
+            </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>2.0</mu>
+                        <mu2>1.5</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+
+        <visual name='rear_left_wheel_link_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <mesh>
+                    <uri>model://su7ultra/meshes/wheel_l.dae</uri>
+                    <scale>1 1 1</scale>
+                </mesh>
+            </geometry>
+        </visual>
+        </link>
+
+        <joint name='rear_right_wheel_joint' type='revolute'>
+            <pose relative_to='base_link'>-1.545 -0.833 -0.024 0 0 0</pose>
+            <parent>base_link</parent>
+            <child>rear_right_wheel_link</child>
+
+            <axis>
+                <xyz>0 1 0</xyz>
+
+                <limit>
+                    <effort>5000</effort>
+                    <velocity>10000</velocity>
+                    <lower>-1e+16</lower>
+                    <upper>1e+16</upper>
+                </limit>
+
+
+                <dynamics>
+                    <damping>10.0</damping>
+                    <friction>0</friction>
+                    <spring_reference>0</spring_reference>
+                    <spring_stiffness>0</spring_stiffness>
+                </dynamics>
+            </axis>
+        </joint>
+
+
+        <link name='rear_right_wheel_link'>
+
+        <pose relative_to='rear_right_wheel_joint'>0 0 0 0 0 0</pose>
+
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>40</mass>
+            <inertia>
+                <ixx>1.4</ixx>
+                <iyy>2.5</iyy>
+                <izz>1.4</izz>
+            </inertia>
+        </inertial>
+
+
+        <collision name='rear_right_wheel_link_collision'>
+            <pose>0 0 0 1.5708 0 0</pose>
+            <geometry>
+                <cylinder>
+                    <length>0.35</length>
+                    <radius>0.3</radius>
+                </cylinder>
+            </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>2.0</mu>
+                        <mu2>1.5</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+
+
+        <visual name='rear_right_wheel_link_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+                <mesh>
+                    <uri>model://su7ultra/meshes/wheel_r.dae</uri>
+                    <scale>1 1 1</scale>
+                </mesh>
+            </geometry>
+        </visual>
+        </link>
+
+
+        <frame name='inertial_joint' attached_to='base_link'>
+            <pose>0 0 0 0 0 0</pose>
+        </frame>
+
+        <frame name='main_mass' attached_to='inertial_joint' />
+
+
+
+
+        <!-- ========== 3D LiDAR ========== -->
+        <link name="lidar3d_link">
+        <!-- 子链接保持零位姿；不要相对 base_link 再定位 -->
+        <pose>0 0 1.25 0 0 0</pose>
+
+        <gravity>0</gravity>
+        <self_collide>false</self_collide>
+        
+        <sensor name="lidar3d" type="ray">
+            <always_on>true</always_on>
+            <update_rate>10</update_rate>
+            <visualize>false</visualize>
+            <pose>0 0 0 0 0 0</pose>
+            <ray>
+            <scan>
+                <horizontal>
+                <samples>360</samples>
+                <resolution>1</resolution>
+                <!-- 160° 左右的水平 FOV，先别 360°，更容易观察 -->
+                <min_angle>-1.3962634</min_angle> <!-- -80° -->
+                <max_angle> 1.3962634</max_angle> <!-- +80° -->
+                </horizontal>
+                <vertical>
+                <samples>32</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.261799</min_angle>  <!-- -15° -->
+                <max_angle> 0.261799</max_angle>  <!-- +15° -->
+                </vertical>
+            </scan>
+            <range>
+                <min>0.3</min>
+                <max>100.0</max>
+                <resolution>0.01</resolution>
+            </range>
+            <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.02</stddev>
+            </noise>
+            </ray>
+
+            <!-- 先验证插件能出消息：用 ~/scan 发 LaserScan，最稳 -->
+            <plugin name="gazebo_ros_laser" filename="libgazebo_ros_ray_sensor.so">
+            <ros>
+                <namespace>/vehicle</namespace>
+                <remapping>~/out:=/points_raw</remapping>
+            </ros>
+            <!-- 想发点云再加这一行（确认你的插件版本支持）；否则先别加 -->
+            <!-- <output_type>PointCloud2</output_type> -->
+            <frame_name>lidar3d_link</frame_name>
+            </plugin>
+        </sensor>
+        </link>
+
+        <!-- 只用关节来定义安装位姿（相对 base_link），显式写 relative_to -->
+        <joint name="lidar3d_fixed_joint" type="fixed">
+        <parent>base_link</parent>
+        <child>lidar3d_link</child>
+        <!-- 车前上方（示例）：x=1.30, z=0.95；显式声明参考系，避免歧义 -->
+        <pose relative_to="base_link">1.30 0 0.95 0 0 0</pose>
+        </joint>
+
+
+
+         
+                <!-- GPS 链接：位置先不管，先把话题跑通 -->
+        <link name="gps_link">
+        <pose>0 0 1.25 0 0 0</pose>
+        <gravity>0</gravity>
+        <self_collide>false</self_collide>
+
+
+        <sensor name="gps" type="gps">
+            <always_on>true</always_on>
+            <update_rate>10</update_rate>
+            <pose>0 0 0 0 0 0</pose>
+
+            <!-- 关键点1：插件文件名用 *_gps_sensor.so -->
+            <!-- 关键点2：remap 用 ~/fix 和 ~/velocity 作用域 -->
+            <plugin name="gazebo_ros_gps_sensor" filename="libgazebo_ros_gps_sensor.so">
+            <ros>
+                <remapping>~/out:=gps/fix</remapping>
+                <remapping>~/velocity:=gps/vel</remapping>
+            </ros>
+            <frame_name>gps_link</frame_name>
+            </plugin>
+        </sensor>
+        </link>
+
+        <!-- 固定关节先保留，坐标以后再细调 -->
+        <joint name="gps_fixed_joint" type="fixed">
+        <parent>base_link</parent>
+        <child>gps_link</child>
+        <pose relative_to="base_link">-0.50 0 0.95 0 0 0</pose>
+        </joint>
+        
+
+
+              
+
+        <!-- IMU link：相对该关节零偏移 -->
+        <link name="imu_link">
+        <pose>0 0 1.25 0 0 0</pose>
+        <!-- 不参与物理，避免抖动 -->
+        <gravity>0</gravity>
+        <self_collide>false</self_collide>
+
+        <!-- 传感器本体 -->
+        <sensor name="imu" type="imu">
+            <always_on>true</always_on>
+            <update_rate>200</update_rate>
+            <pose>0 0 0 0 0 0</pose>
+
+            <!-- 噪声模型（按需调小/调大） -->
+            <imu>
+            <noise>
+                <type>gaussian</type>
+                <accel>
+                <mean>0.0</mean>
+                <stddev>0.05</stddev>         <!-- m/s^2 -->
+                <bias_mean>0.0</bias_mean>
+                <bias_stddev>0.0001</bias_stddev>
+                </accel>
+                <gyro>
+                <mean>0.0</mean>
+                <stddev>0.001</stddev>        <!-- rad/s -->
+                <bias_mean>0.0</bias_mean>
+                <bias_stddev>0.0001</bias_stddev>
+                </gyro>
+            </noise>
+            </imu>
+
+            <!-- ROS2 插件：把输出重映射到 /imu_raw -->
+            <plugin name="gazebo_ros_imu_sensor" filename="libgazebo_ros_imu_sensor.so">
+            <ros>
+                <!-- namespace 无所谓；右侧用绝对话题会覆盖命名空间 -->
+                <namespace>/vehicle</namespace>
+                <remapping>~/out:=/imu_raw</remapping>
+            </ros>
+            <frame_name>imu_link</frame_name>
+            </plugin>
+        </sensor>
+        </link>
+
+          <!-- 固定关节：定义 IMU 安装位姿（相对 base_link） -->
+        <joint name="imu_fixed_joint" type="fixed">
+        <parent>base_link</parent>
+        <child>imu_link</child>
+        <!-- 建议放重心附近；先随便给一个示例位姿 -->
+        <pose relative_to="base_link">0 0 0.30 0 0 0</pose>
+        </joint>
+
+       
+
+                
+        <!-- 相机 link：相对该关节零偏移 -->
+        <link name="camera_link">
+        <pose>0 0 1.35 0 0 0</pose>
+        <gravity>0</gravity>
+        <self_collide>false</self_collide>
+
+
+        <!-- 传感器本体（RGB 相机）-->
+        <sensor name="front_camera" type="camera">
+            <always_on>true</always_on>
+            <update_rate>30</update_rate>
+            <pose>0 0 0 0 0 0</pose>
+
+            <camera>
+            <!-- 水平视场角（约 80°）-->
+            <horizontal_fov>1.3962634</horizontal_fov>
+            <image>
+                <width>1280</width>
+                <height>720</height>
+                <format>R8G8B8</format>
+            </image>
+            <clip>
+                <near>0.05</near>
+                <far>200.0</far>
+            </clip>
+            <!-- 零畸变；若需要标定，可改这些参数 -->
+            <distortion>
+                <k1>0</k1><k2>0</k2><k3>0</k3><p1>0</p1><p2>0</p2>
+            </distortion>
+            </camera>
+
+            <!-- ROS2 插件：重映射到绝对话题 /image_raw /camera_info -->
+            <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
+            <ros>
+                <namespace>/vehicle</namespace>
+                <remapping>~/image_raw:=/image_raw</remapping>
+                <remapping>~/camera_info:=/camera_info</remapping>
+            </ros>
+            <frame_name>camera_link</frame_name>
+            </plugin>
+        </sensor>
+        </link>
+
+        <!-- 固定关节：相机安装位姿（相对 base_link）-->
+        <joint name="camera_fixed_joint" type="fixed">
+        <parent>base_link</parent>
+        <child>camera_link</child>
+        <!-- 示例：车头中线，略高 -->
+        <pose relative_to="base_link">2.20 0 0.60 0 0 0</pose>
+        </joint>
+
+
+        
+
+
+
+
+        <plugin name="std_msg_vehicle_controller" filename="libstd_msg_vehicle_plugin.so">
+            <ros>
+                <namespace>/vehicle</namespace>
+                <command_topic>vehicle_cmd</command_topic>
+                <status_topic>vehicle_status</status_topic>
+                <wheelbase>3.0</wheelbase>
+                <track_width>1.666</track_width>
+                <wheel_radius>0.3</wheel_radius>
+                <max_speed>20.0</max_speed>
+                <max_steering_angle>0.6</max_steering_angle>
+            </ros>
+        </plugin>
+    </model>
+</sdf> 

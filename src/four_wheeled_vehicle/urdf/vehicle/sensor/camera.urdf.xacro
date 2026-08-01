@@ -1,0 +1,46 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="camera_xacro" params="parent_link xyz">
+        <link name="camera_link">
+        </link>
+
+        <joint name="camera_fixed_joint" type="fixed">
+            <parent link="${parent_link}"/>
+            <child link="camera_link"/>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+        </joint>
+
+        <gazebo reference="camera_link">
+            <sensor type="camera" name="front_camera">
+                <always_on>true</always_on>
+                <update_rate>30</update_rate>
+                <camera>
+                    <horizontal_fov>1.3962634</horizontal_fov>
+                    <image>
+                        <width>1280</width>
+                        <height>720</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.05</near>
+                        <far>200.0</far>
+                    </clip>
+                    <distortion>
+                        <k1>0</k1>
+                        <k2>0</k2>
+                        <k3>0</k3>
+                        <p1>0</p1>
+                        <p2>0</p2>
+                    </distortion>
+                </camera>
+                <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>/vehicle</namespace>
+                        <remapping>~/image_raw:=/image_raw</remapping>
+                        <remapping>~/camera_info:=/camera_info</remapping>
+                    </ros>
+                    <frame_name>camera_link</frame_name>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,77 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="wheel_xacro" params="wheel_name parent_link xyz effort velocity">
+        <joint name="${wheel_name}_wheel_joint" type="revolute">
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+            <parent link="${parent_link}"/>
+            <child link="${wheel_name}_wheel_link"/>
+            <axis xyz="0 1 0"/>
+            <limit lower="-10000000000000000" upper="10000000000000000" effort="${effort}" velocity="${velocity}"/>
+            <dynamics damping="10.0" friction="0"/>
+        </joint>
+
+        <link name="${wheel_name}_wheel_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="40"/>
+                <inertia ixx="1.4" ixy="0" ixz="0" iyy="2.5" iyz="0" izz="1.4"/>
+            </inertial>
+
+            <collision name="${wheel_name}_wheel_link_collision">
+                <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+                <geometry>
+                    <cylinder length="0.35" radius="0.3"/>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode mu="2.0" mu2="1.5" slip1="0.0" slip2="0.0"/>
+                    </friction>
+                </surface>
+            </collision>
+
+            <visual name="${wheel_name}_wheel_link_visual">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(env HOME)/.gazebo/models/su7ultra/meshes/wheel_l.dae"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="wheel_right_xacro" params="wheel_name parent_link xyz effort velocity">
+        <joint name="${wheel_name}_wheel_joint" type="revolute">
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+            <parent link="${parent_link}"/>
+            <child link="${wheel_name}_wheel_link"/>
+            <axis xyz="0 1 0"/>
+            <limit lower="-10000000000000000" upper="10000000000000000" effort="${effort}" velocity="${velocity}"/>
+            <dynamics damping="10.0" friction="0"/>
+        </joint>
+
+        <link name="${wheel_name}_wheel_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="40"/>
+                <inertia ixx="1.4" ixy="0" ixz="0" iyy="2.5" iyz="0" izz="1.4"/>
+            </inertial>
+
+            <collision name="${wheel_name}_wheel_link_collision">
+                <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+                <geometry>
+                    <cylinder length="0.35" radius="0.3"/>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode mu="2.0" mu2="1.5" slip1="0.0" slip2="0.0"/>
+                    </friction>
+                </surface>
+            </collision>
+
+            <visual name="${wheel_name}_wheel_link_visual">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(env HOME)/.gazebo/models/su7ultra/meshes/wheel_r.dae"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro:macro>
+</robot>

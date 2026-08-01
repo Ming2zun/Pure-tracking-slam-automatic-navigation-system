@@ -1,0 +1,32 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="base_xacro">
+        <link name="base_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="2000"/>
+                <inertia ixx="1200" ixy="0" ixz="0" iyy="2500" iyz="0" izz="3000"/>
+            </inertial>
+
+            <collision name="base_link_collision">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="5.07 1.97 0.47"/>
+                </geometry>
+            </collision>
+
+            <visual name="base_link_visual">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(env HOME)/.gazebo/models/su7ultra/meshes/car.dae" scale="1 1 1"/>
+                </geometry>
+            </visual>
+        </link>
+        
+        <link name="base_footprint"/>
+        <joint name="base_footprint_joint" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0.325" rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,18 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="su7ultra_description">
+    <xacro:include filename="$(find su7ultra_description)/urdf/base.urdf.xacro" />
+    <xacro:include filename="$(find su7ultra_description)/urdf/actuator/steering.urdf.xacro" />
+    <xacro:include filename="$(find su7ultra_description)/urdf/actuator/wheel.urdf.xacro" />
+    <xacro:include filename="$(find su7ultra_description)/urdf/plugin/gazebo_control.xacro" />
+
+    <xacro:base_xacro />
+    
+    <xacro:steering_xacro steering_name="front_left" parent_link="base_link" xyz="1.445 0.833 -0.024" />
+    <xacro:steering_xacro steering_name="front_right" parent_link="base_link" xyz="1.445 -0.833 -0.024" />
+
+    <xacro:wheel_xacro wheel_name="front_left" parent_link="front_left_steering_link" xyz="0 0 0" effort="0" velocity="0" />
+    <xacro:wheel_right_xacro wheel_name="front_right" parent_link="front_right_steering_link" xyz="0 0 0" effort="0" velocity="0" />
+    <xacro:wheel_xacro wheel_name="rear_left" parent_link="base_link" xyz="-1.545 0.833 -0.024" effort="5000" velocity="10000" />
+    <xacro:wheel_right_xacro wheel_name="rear_right" parent_link="base_link" xyz="-1.545 -0.833 -0.024" effort="5000" velocity="10000" />
+
+    <xacro:gazebo_control_plugin />
+</robot>
